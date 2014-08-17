@@ -9,6 +9,7 @@
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<title><?php echo $title_for_layout; ?></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<?php
 		echo $this->Html->meta('icon');
 
