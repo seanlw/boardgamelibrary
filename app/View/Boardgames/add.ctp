@@ -24,12 +24,16 @@
             </div>
         </div>
     </div>
+    <div id="results-loading" style="display:none;">
+        <span class="label label-warning">Loading...</span>
+    </div>
     <div id="results" class="row" style="display:none;">
         <div class="panel panel-default">
             <div class="panel-heading">Results</div>
             <table class="table table-hover">
                 <thead>
                     <tr>
+                        <th>Image</th>
                         <th>ID</th>
                         <th>Title</th>
                         <th>Year Published</th>

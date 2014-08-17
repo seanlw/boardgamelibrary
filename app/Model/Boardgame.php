@@ -59,7 +59,7 @@ class Boardgame extends AppModel {
                     foreach ($r['result'] as $n) {
                         if ($n['@value'] == 'Best') {
                             if ($n['@numvotes'] > $topvotes) {
-                                $bestwidth = $r['@numplayers'];
+                                $bestwith = $r['@numplayers'];
                                 $topvotes = $n['@numvotes'];
                             }
                             break;
@@ -74,7 +74,7 @@ class Boardgame extends AppModel {
             'bgg_id' => $item['@id'],
             'title' => $title,
             'num_players' => $item['minplayers']['@value'] . ' - ' . $item['maxplayers']['@value'],
-            'best_num_players' => $bestwidth,
+            'best_num_players' => $bestwith,
             'playing_time' => $item['playingtime']['@value'],
             'image' => basename($item['image']),
             'thumbnail' => basename($item['thumbnail']),

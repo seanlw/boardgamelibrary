@@ -42,3 +42,28 @@
 .browse-table tbody tr td {
     vertical-align: middle;
 }
+
+#results-loading {
+    text-align: center;
+    margin-bottom: 20px;
+ 
+    .label {
+        font-size: 100%;
+    }   
+}
+
+#results {
+    table {
+        thead th:first-child {
+            width: 70px;
+        }
+        
+        tbody tr td {
+            vertical-align: middle;
+            img {
+                max-width: 60px;
+                max-height: 60px;
+            }
+        }
+    }
+}

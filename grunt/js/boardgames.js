@@ -11,10 +11,12 @@ $(document).ready(function(){
         
         var url = $(this).attr('action');
         var postdata = $(this).serialize();
+        $('#results-loading').show();
         $.post(url, postdata).done(function(data) {
             for (var i = 0; i < data['Bgg']['items']['@total']; i++) {
                 var item = data['Bgg']['items']['item'][i];
                 var row = $('<tr> \
+                    <td>' + ((item['thumbnail'] == '') ? '' : '<img src="' + item['thumbnail'] + '" alt="" />') + '</td> \
                     <td>' + item['@id'] + '</td> \
                     <td>' + item['name']['@value'] + '</td> \
                     <td>' + ((item['yearpublished']) ? item['yearpublished']['@value'] : '') + '</td> \
@@ -23,6 +25,7 @@ $(document).ready(function(){
                 $('#results table tbody').append(row);
                 $('#results').show();
             }
+            $('#results-loading').hide();
         });
     });
 });
