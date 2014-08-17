@@ -16,7 +16,7 @@ $(document).ready(function(){
             for (var i = 0; i < data['Bgg']['items']['@total']; i++) {
                 var item = data['Bgg']['items']['item'][i];
                 var row = $('<tr> \
-                    <td>' + ((item['thumbnail'] == '') ? '' : '<img src="' + item['thumbnail'] + '" alt="" />') + '</td> \
+                    <td><img src="' + base_url + 'boardgames/bggthumbnail/' + item['@id'] + '" alt="" /></td> \
                     <td>' + item['@id'] + '</td> \
                     <td>' + item['name']['@value'] + '</td> \
                     <td>' + ((item['yearpublished']) ? item['yearpublished']['@value'] : '') + '</td> \

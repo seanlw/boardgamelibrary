@@ -34,20 +34,7 @@ class Bgg extends AppModel {
      */
     public function findByTitle($title) {
         $title = str_replace(array(' ', '%20'), '+', $title);
-        $results = $this->_request('search', array('query' => $title, 'type' => 'boardgame,boardgameexpansion'));
-        if ($results['items']['@total'] > 0) {
-            foreach ($results['items']['item'] as $key => $val) {
-                $item = $this->findById($val['@id']);
-                if (isset($item['Bgg']['items']['item']['thumbnail'])) {
-                    $results['items']['item'][$key]['thumbnail'] = $item['Bgg']['items']['item']['thumbnail'];
-                }
-                else {
-                    $results['items']['item'][$key]['thumbnail'] = '';
-                }
-            }
-        }
-        
-        return array($this->alias => $results);
+        return array($this->alias => $this->_request('search', array('query' => $title, 'type' => 'boardgame,boardgameexpansion')));
     }
     
     /**

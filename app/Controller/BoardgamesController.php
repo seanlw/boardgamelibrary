@@ -68,6 +68,50 @@ class BoardgamesController extends AppController {
     }
     
     /**
+     * Displays the thumbnail image from BoardGameGeek
+     *
+     * @param int $id The Thing ID from BGG API
+     */
+    public function bggthumbnail($id) {
+        $this->autoRender = false;
+        $item = $this->Bgg->findById($id);
+        $item = $item['Bgg']['items']['item'];
+        
+        if (!isset($item['thumbnail'])) {
+            $item['thumbnail'] = WWW_ROOT . DS . 'img' . DS . 'missing-image.png';
+        }
+        
+        $parts = pathinfo($item['thumbnail']);
+		switch ($parts['extension']) {
+			case 'jpg':
+				header('Content-type: image/jpeg');
+				break;
+			case 'png':
+				header('Content-type: image/png');
+				break;
+			case 'gif':
+				header('Content-type: image/gif');
+				break;
+			default:
+				header('Content-type: application/octet-stream');
+		}
+
+		ob_start();
+		$context = stream_context_create(array('http' => array('header' => 'Connection: close')));
+		if (($fp = fopen($item['thumbnail'], 'r', false, $context)) !== false) {
+			while (!feof($fp)) {
+				echo fgets($fp, 1024);
+				ob_flush();
+				flush();
+			}
+			fclose($fp);
+		} else {
+			header("HTTP/1.0 500 Internal Server Error");		
+		}
+		ob_end_flush();
+    }
+    
+    /**
      * Loads Boardgame information into the request data used in the views
      *
      * @param int $id Boardgame Model ID
