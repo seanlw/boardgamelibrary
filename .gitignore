@@ -1,0 +1,7 @@
+.DS_Store
+app/tmp
+app/Config/database.php
+app/Database/bglib.sqlite
+app/webroot/img/boardgames/
+grunt/node_modules
+grunt/.sass-cache
