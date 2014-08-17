@@ -76,6 +76,9 @@
                     </tbody>
                 </table>
             </div>
+            <div class="delete-col">
+                <?php echo $this->Html->link('<span class="glyphicon glyphicon-remove"></span> Delete Game', array('controller' => 'boardgames', 'action' => 'delete', $this->request->data['Boardgame']['id']), array('class' => 'btn btn-danger', 'escape' => false)); ?>
+            </div>
         </div>
     </div>
 </div>

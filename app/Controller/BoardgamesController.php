@@ -31,8 +31,13 @@ class BoardgamesController extends AppController {
         }
         elseif($id) {
             $rs = $this->Bgg->findById($id);
-            $rs = $this->Boardgame->insertBgg($rs);
-            $this->redirect(array('controller' => 'boardgames', 'action' => 'edit', $rs['Boardgame']['id']));            
+            if (($rs = $this->Boardgame->insertBgg($rs))) {
+                $this->redirect(array('controller' => 'boardgames', 'action' => 'edit', $rs['Boardgame']['id']));
+            }
+            else {
+                $this->Session->setFlash('Failed to add board game. It could already be in your library.', 'danger_flash');
+                $this->redirect(array('controller' => 'library', 'action' => 'browse'));
+            }        
         }
     }
     
@@ -109,6 +114,28 @@ class BoardgamesController extends AppController {
 			header("HTTP/1.0 500 Internal Server Error");		
 		}
 		ob_end_flush();
+    }
+    
+    /**
+     * Delete board game from database
+     *
+     * @param int $id Boardgame Model ID
+     */
+    public function delete($id) {
+        if ($this->request->is('put')) {
+            if (isset($this->request->data['Boardgame']['confirm']) && $this->request->data['Boardgame']['confirm']) {
+                if ($this->Boardgame->delete($this->request->data['Boardgame']['id'], true)) {
+                    $this->Session->setFlash('Board game ' . $this->request->data['Boardgame']['title'] . ' has been deleted', 'success_flash');
+                }
+                else {
+                    $this->Session->setFlash('Board game could not be deleted', 'danger_flash');
+                }
+                $this->redirect(array('controller' => 'library', 'action' => 'browse'));
+            }
+            $this->redirect(array('controller' => 'boardgames', 'action' => 'edit', $this->request->data['Boardgame']['id']));
+        }
+        $this->request->data = $this->Boardgame->findById($id);
+        $this->set('game', $this->request->data);
     }
     
     /**

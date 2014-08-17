@@ -14,39 +14,41 @@
         </ul>
     </div>
 </div>
-<table class="table table-striped table-hover table-browse table-condensed browse-table">
-    <thead>
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-browse table-condensed browse-table">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Title</th>
+                <th># of Players</th>
+                <th>Best with</th>
+                <th>Playing Time</th>
+                <th>Status</th>
+                <th># Check-outs</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($games as $g): ?>
         <tr>
-            <th>Image</th>
-            <th>Title</th>
-            <th># of Players</th>
-            <th>Best with</th>
-            <th>Playing Time</th>
-            <th>Status</th>
-            <th># Check-outs</th>
+            <td><?php echo $this->Html->link(
+                $this->Html->image('boardgames/thumbnails/' . $g['Boardgame']['thumbnail']), 
+                array(
+                    'controller' => 'boardgames',
+                    'action' => 'edit',
+                    $g['Boardgame']['id']
+                ),
+                array(
+                    'escape' => false
+                )
+            ); ?></td>
+            <td><?php echo $this->Html->link($g['Boardgame']['title'], array('controller' => 'boardgames', 'action' => 'edit', $g['Boardgame']['id']), array('escape' => false)); ?></td>
+            <td><?php echo $g['Boardgame']['num_players']; ?></td>
+            <td><?php echo $g['Boardgame']['best_num_players']; ?> players</td>
+            <td><?php echo $g['Boardgame']['playing_time']; ?> mins</td>
+            <td><span class="label label-md <?php echo ($g['Boardgame']['status'] == 'in') ? 'label-success' : 'label-danger'; ?>"><?php echo strtoupper($g['Boardgame']['status']); ?></span></td>
+            <td><?php echo count($g['Checkout']); ?></td>
         </tr>
-    </thead>
-    <tbody>
-    <?php foreach ($games as $g): ?>
-    <tr>
-        <td><?php echo $this->Html->link(
-            $this->Html->image('boardgames/thumbnails/' . $g['Boardgame']['thumbnail']), 
-            array(
-                'controller' => 'boardgames',
-                'action' => 'edit',
-                $g['Boardgame']['id']
-            ),
-            array(
-                'escape' => false
-            )
-        ); ?></td>
-        <td><?php echo $this->Html->link($g['Boardgame']['title'], array('controller' => 'boardgames', 'action' => 'edit', $g['Boardgame']['id']), array('escape' => false)); ?></td>
-        <td><?php echo $g['Boardgame']['num_players']; ?></td>
-        <td><?php echo $g['Boardgame']['best_num_players']; ?> players</td>
-        <td><?php echo $g['Boardgame']['playing_time']; ?> mins</td>
-        <td><span class="label label-md <?php echo ($g['Boardgame']['status'] == 'in') ? 'label-success' : 'label-danger'; ?>"><?php echo strtoupper($g['Boardgame']['status']); ?></span></td>
-        <td><?php echo count($g['Checkout']); ?></td>
-    </tr>
-    <?php endforeach; ?>
-    </tbody>
-</table>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>

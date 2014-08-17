@@ -9,12 +9,20 @@
  */
 class Boardgame extends AppModel {
 
-    public $hasMany = array('Checkout');
+    public $hasMany = array(
+        'Checkout' => array(
+            'dependent' => true
+        )
+    );
     
     public $validate = array(
         'upc' => array(
             'rule' => 'isUnique',
             'message' => 'Identifying code is already in use'
+        ),
+        'bgg_id' => array(
+            'rule' => 'isUnique',
+            'message' => 'BoardGameGeek ID must be unique. The board game may already be added to the library.'
         )
     );
 
@@ -150,7 +158,7 @@ class Boardgame extends AppModel {
     }
     
     /**
-     * afterFind overwride to include the board game checkout status IN/OUT
+     * afterFind overwrite to include the board game checkout status IN/OUT
      */
     public function afterFind($results, $primary = false) {
         foreach ($results as $key => $val) {
@@ -175,4 +183,27 @@ class Boardgame extends AppModel {
         
         return $results;
     }
+    
+    /**
+     * beforeDelete method
+     */
+    public function beforeDelete() {
+        $this->read(null, $this->id);
+    }
+     
+    /**
+     * afterDelete overwite method
+     */
+    public function afterDelete() {
+        $imgpath = WWW_ROOT . 'img' . DS . 'boardgames' . DS . 'images' . DS . $this->data['Boardgame']['image'];
+        $thmpath = WWW_ROOT . 'img' . DS . 'boardgames' . DS . 'thumbnails' . DS . $this->data['Boardgame']['thumbnail'];
+        
+        if (file_exists($imgpath)) {
+            unlink($imgpath);
+        }
+        if (file_exists($thmpath)) {
+            unlink($thmpath);
+        }
+    }
+    
 }
