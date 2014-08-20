@@ -60,12 +60,16 @@ class Boardgame extends AppModel {
            the one with the most votes
         */
         $bestwith = 0;
+        if (!isset($item['poll'][0])) { $item['poll'] = array($item['poll']); }
         foreach ($item['poll'] as $p) {
             if ($p['@name'] == 'suggested_numplayers') {
                 $topvotes = 0;
+                if (!isset($p['results'][0])) { $p['results'] = array($p['results']); }
                 foreach ($p['results'] as $r) {
+                    if (!isset($r['result'])) { break; } /* No poll has been done. */
+                    if (!isset($r['result'][0])) { $r['result'] = array($r['result']); }
                     foreach ($r['result'] as $n) {
-                        if ($n['@value'] == 'Best') {
+                        if (isset($n['@value']) && ($n['@value'] == 'Best')) {
                             if ($n['@numvotes'] > $topvotes) {
                                 $bestwith = $r['@numplayers'];
                                 $topvotes = $n['@numvotes'];
