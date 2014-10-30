@@ -13,7 +13,8 @@ class Bgg extends AppModel {
 
     public $useTable = false;
     public $config = array(
-        'endpoint' => 'http://www.boardgamegeek.com/xmlapi2/'
+        'endpoint' => '//www.boardgamegeek.com/xmlapi2/',
+        'protocal' => 'https'
     );
     
     /**
@@ -45,7 +46,7 @@ class Bgg extends AppModel {
      * @return array
      */
     private function _request($action, $params = array()) {
-        $url = $this->config['endpoint'] . $action . ($params ? '?' . http_build_query($params) : '');
+        $url = $this->config['protocal'] . ':' . $this->config['endpoint'] . $action . ($params ? '?' . http_build_query($params) : '');
         return Xml::toArray(Xml::build($url));
     }
 }

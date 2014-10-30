@@ -30,9 +30,10 @@ class Boardgame extends AppModel {
      * Gets board game information from BGG and inserts it into the Database
      *
      * @param array $bgg An array from Bgg Model
+     * @param string $protocal The http protocal to use (http, https)
      * @return array
      */
-    public function insertBgg($bgg) {
+    public function insertBgg($bgg, $protocal = 'https') {
         if (!isset($bgg['Bgg']['items']['item'])) return false;
         
         $item = $bgg['Bgg']['items']['item'];
@@ -43,8 +44,8 @@ class Boardgame extends AppModel {
         $thumb = $baseimg . 'thumbnails' . DS . basename($item['thumbnail']);
         
         /* Get and store the images for local use */
-        file_put_contents($image, file_get_contents($item['image']));
-        file_put_contents($thumb, file_get_contents($item['thumbnail']));
+        file_put_contents($image, file_get_contents($protocal . ':' . $item['image']));
+        file_put_contents($thumb, file_get_contents($protocal . ':' . $item['thumbnail']));
         
         /* Need to seach for the primary game title, many titles will exist */
         $title = '';
